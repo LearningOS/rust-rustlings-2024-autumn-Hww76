@@ -34,7 +34,7 @@ mod tests {
     #[test]
     fn at_least_three_types_of_fruits() {
         let basket = fruit_basket();
-        assert!(basket.len() >= 3);
+        let var_name = assert!(basket.len() >= 3);
     }
 
     #[test]
