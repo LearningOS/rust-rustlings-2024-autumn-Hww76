@@ -8,13 +8,26 @@
 //
 // Execute `rustlings hint traits2` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+// 第24行有不理解的地方
 
 trait AppendBar {
     fn append_bar(self) -> Self;
 }
 
 // TODO: Implement trait `AppendBar` for a vector of strings.
+impl AppendBar for Vec<String>{
+    fn append_bar(mut self) -> Self{
+        self.insert(self.len(),"Bar".to_string());
+        return self;
+    }
+    /*
+    //我还是没搞懂什么是语句，什么是表达式，下面这种语法会报错
+    fn append_bar(mut self) -> Self{
+        self.insert(self.len(),"Bar".to_string())
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Vec<String>`, found `()`
+    }
+    */
+}
 
 #[cfg(test)]
 mod tests {
