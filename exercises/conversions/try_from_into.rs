@@ -9,7 +9,6 @@
 // Execute `rustlings hint try_from_into` or use the `hint` watch subcommand for
 // a hint.
 
-use std::convert::{TryFrom, TryInto};
 
 #[derive(Debug, PartialEq)]
 struct Color {
@@ -27,7 +26,7 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
+// 多种转变形式
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -41,6 +40,12 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (r,g,b) = tuple;
+        if 0 <= r && r <= 255 && 0 <= g && g <=255 &&  0 <= b && b <=255{
+            return Ok(Self{red:r as u8,green:g as u8,blue:b as u8})
+        }else {
+            return Err(Self::Error::IntConversion)
+        }
     }
 }
 
@@ -48,6 +53,13 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if arr.len() != 3{
+            return Err(Self::Error::BadLen)
+        }
+        let r = arr[0];
+        let g = arr[1];
+        let b = arr[2];
+        Color::try_from((r,g,b))
     }
 }
 
@@ -55,6 +67,13 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3{
+            return Err(Self::Error::BadLen)
+        }
+        let r = slice[0];
+        let g = slice[1];
+        let b = slice[2];
+        Color::try_from((r,g,b))
     }
 }
 

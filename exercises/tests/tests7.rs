@@ -34,7 +34,7 @@
 // Execute `rustlings hint tests7` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// 在build.rs中的方法好奇怪，在println打印一下，就能执行某个指令？？？？
 
 fn main() {}
 
