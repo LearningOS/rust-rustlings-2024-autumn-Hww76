@@ -3,10 +3,24 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
+
+// 归并排序，暂时放弃
+// 
+fn sort<T: std::cmp::PartialOrd + Clone>(array: &mut [T]){
 	//TODO
+    if array.len() == 1{
+        return;
+    }
+    for i in 0..array.len()-1{ // 比较 n-1 次, 由于是左闭右开，需要写到 len-1
+        for j in i+1..array.len(){
+            if array[i] > array[j]{
+                let t = array[i].clone();
+                array[i] = array[j].clone();
+                array[j] = t.clone(); 
+            }
+        }
+    }
 }
 #[cfg(test)]
 mod tests {
