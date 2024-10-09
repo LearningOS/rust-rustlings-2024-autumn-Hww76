@@ -1,6 +1,6 @@
 /*
 	queue
-	This question requires you to use queues to implement the functionality of the stac
+	This question requires you to use queues to implement the functionality of the stack
 */
 // I AM NOT DONE
 
@@ -54,7 +54,7 @@ impl<T> Default for Queue<T> {
 
 pub struct myStack<T>
 {
-	//TODO
+	//TODO,为什么要用两个
 	q1:Queue<T>,
 	q2:Queue<T>
 }
@@ -71,7 +71,12 @@ impl<T> myStack<T> {
     }
     pub fn pop(&mut self) -> Result<T, &str> {
         //TODO
-		Err("Stack is empty")
+        if self.is_empty(){
+            Err("Stack is empty")
+        }else {
+            
+        }
+		
     }
     pub fn is_empty(&self) -> bool {
 		//TODO

@@ -3,7 +3,7 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
+//渐入佳境
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -51,12 +51,56 @@ where
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
         //TODO
+        match self.root {
+            None => self.root = Some(Box::new(TreeNode::new(value))),
+            Some(ref mut node) => node.insert(value),
+        }
+        // match self.root {
+        //     None => self.root = Some(Box::new(TreeNode::new(value))),
+        //     Some(ref mut node) => {
+        //         if node.value < value{
+        //             match node.right {
+        //                 None => node.right = Some(Box::new(TreeNode::new(value))),
+        //                 Some(ref mut node_ptr) =>  node_ptr.insert(value),
+        //             }
+        //         }else if node.value > value{
+        //             match node.left {
+        //                 None => node.left = Some(Box::new(TreeNode::new(value))),
+        //                 Some(ref mut node_ptr) => node_ptr.insert(value),
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
         //TODO
-        true
+        match self.root {
+            None => false,
+            Some(ref node) => node.search(value)
+        }
+        // match self.root {
+        //     Some(ref mut node) => {
+        //         while node != None {
+        //             if value == node.value{ // 值相同
+        //                 return true;
+        //             }else if value <  node.value{ // 值更小
+        //                 match node.left {
+        //                     None => false,
+        //                     Some(ref node_left) => node = &mut node_left,
+        //                 }
+        //             }else { // 值更大
+        //                 match node.right {
+        //                     None => false,
+        //                     Some(ref node_right) => node = &mut node_right,
+        //                 }
+        //             }
+        //         }
+        //         return false;
+        //     }
+        //     None => false, 
+        // }
     }
 }
 
@@ -66,7 +110,35 @@ where
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
-        //TODO
+        if self.value == value{
+            return;
+        }else if self.value < value{
+            match self.right {
+                Some(ref mut node_rigth) => node_rigth.insert(value),
+                None => self.right = Some(Box::new(TreeNode::new(value))),
+            }
+        }else {
+            match self.left {
+                Some(ref mut node_left) => node_left.insert(value),
+                None => self.left = Some(Box::new(TreeNode::new(value))),
+            }           
+        }
+    }
+
+    fn search(&self, value: T) -> bool{
+        if self.value == value{
+            true
+        }else if self.value < value{
+            match self.right {
+                Some(ref node_rigth) => node_rigth.search(value),
+                None => false,
+            }
+        }else {
+            match self.left {
+                Some(ref node_left) => node_left.search(value),
+                None => false,
+            }           
+        }       
     }
 }
 
