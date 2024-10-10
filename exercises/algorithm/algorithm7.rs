@@ -3,7 +3,7 @@
 	This question requires you to use a stack to achieve a bracket match
 */
 
-// I AM NOT DONE
+// little hard
 #[derive(Debug)]
 struct Stack<T> {
 	size: usize,
@@ -105,8 +105,40 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 fn bracket_match(bracket: &str) -> bool
 {
 	//TODO
-	
-	true
+	let mut stack = Stack::<char>::new(); // 存储压栈的左半括号
+	let mut idx = 0;
+	for c in bracket.chars(){ // 以char的形式读取braket
+		if c == '[' || c == '{' || c == '(' { // 进行压栈
+			stack.push(c);
+		}else if c == ']' || c == '}' || c == ')' { // 进行出栈
+			if stack.is_empty(){ // 栈空匹配失败
+				return false;
+			}
+			let top_char = stack.peek().unwrap();
+			if match_or_false(top_char,&c){ // 当前右括号与栈顶匹配，成功出栈，失败返回false
+				stack.pop();
+			}else {
+				return false;
+			}
+		}
+	}
+	if stack.is_empty(){ // 字符匹配完后栈内仍有字符则匹配不充分
+		true
+	} else {
+		false
+	}
+}
+
+fn match_or_false(stack_top: &char, match_char: &char) -> bool{
+	let mut result = false;
+	if *stack_top == '(' && *match_char == ')'{
+		result = true		
+	}else if *stack_top == '[' && *match_char == ']'{
+		result = true		
+	}else if *stack_top == '{' && *match_char == '}'{
+		result = true		
+	}
+	result
 }
 
 #[cfg(test)]

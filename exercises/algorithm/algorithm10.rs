@@ -2,21 +2,21 @@
 	graph
 	This problem requires you to implement a basic graph function
 */
-// I AM NOT DONE
+// a piece of cake
 
 use std::collections::{HashMap, HashSet};
 use std::fmt;
 #[derive(Debug, Clone)]
-pub struct NodeNotInGraph;
+pub struct NodeNotInGraph; // 图中无点
 impl fmt::Display for NodeNotInGraph {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "accessing a node that is not in the graph")
     }
 }
-pub struct UndirectedGraph {
+pub struct UndirectedGraph { // 无向图
     adjacency_table: HashMap<String, Vec<(String, i32)>>,
 }
-impl Graph for UndirectedGraph {
+impl Graph for UndirectedGraph { // 为无向图实现图特征
     fn new() -> UndirectedGraph {
         UndirectedGraph {
             adjacency_table: HashMap::new(),
@@ -28,28 +28,53 @@ impl Graph for UndirectedGraph {
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>> {
         &self.adjacency_table
     }
-    fn add_edge(&mut self, edge: (&str, &str, i32)) {
+    fn add_edge(&mut self, edge: (&str, &str, i32)) { // 加边方法
         //TODO
+        let (a,b,weight) = edge;
+        if !self.contains(a){
+            self.add_node(a);
+        }
+        if !self.contains(b){
+            self.add_node(b);
+        }
+        // 两个点同时作为起点进行加边
+        let mut map = self.adjacency_table_mutable();
+        map.get_mut(a).unwrap().push((b.to_string(),weight));
+        map.get_mut(b).unwrap().push((a.to_string(),weight));
     }
 }
-pub trait Graph {
+pub trait Graph { // 图特征，下面的函数方法都是默认实现
     fn new() -> Self;
     fn adjacency_table_mutable(&mut self) -> &mut HashMap<String, Vec<(String, i32)>>;
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>>;
     fn add_node(&mut self, node: &str) -> bool {
         //TODO
-		true
+		let mut map = self.adjacency_table_mutable();
+        map.insert(node.to_string(), Vec::<(String,i32)>::new());
+        true
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        // 判断边上的两个点是否存在
+        let (a,b,weight) = edge;
+        if !self.contains(a){
+            self.add_node(a);
+        }
+        if !self.contains(b){
+            self.add_node(b);
+        }
+        // 两个点同时作为起点进行加边
+        let mut map = self.adjacency_table_mutable();
+        map.get_mut(a).unwrap().push((b.to_string(),weight));
+        map.get_mut(b).unwrap().push((a.to_string(),weight));
     }
-    fn contains(&self, node: &str) -> bool {
-        self.adjacency_table().get(node).is_some()
+    fn contains(&self, node: &str) -> bool { 
+        self.adjacency_table().get(node).is_some() // 判断是否包括某个点
     }
     fn nodes(&self) -> HashSet<&String> {
         self.adjacency_table().keys().collect()
     }
-    fn edges(&self) -> Vec<(&String, &String, i32)> {
+    fn edges(&self) -> Vec<(&String, &String, i32)> { // 获取所有的边，以元组的形式返回
         let mut edges = Vec::new();
         for (from_node, from_node_neighbours) in self.adjacency_table() {
             for (to_node, weight) in from_node_neighbours {

@@ -2,7 +2,7 @@
 	queue
 	This question requires you to use queues to implement the functionality of the stack
 */
-// I AM NOT DONE
+// a piece of cake
 
 #[derive(Debug)]
 pub struct Queue<T> {
@@ -56,31 +56,57 @@ pub struct myStack<T>
 {
 	//TODO,为什么要用两个
 	q1:Queue<T>,
-	q2:Queue<T>
+	q2:Queue<T>,
+    on_work: i32, // 选择哪个队列进行工作
 }
 impl<T> myStack<T> {
     pub fn new() -> Self {
         Self {
 			//TODO
 			q1:Queue::<T>::new(),
-			q2:Queue::<T>::new()
+			q2:Queue::<T>::new(),
+            on_work: 1, // 代表使用第1个队列进行出入队
         }
     }
     pub fn push(&mut self, elem: T) {
         //TODO
+        if self.on_work == 1{
+            self.q1.enqueue(elem);
+        }else {
+            self.q2.enqueue(elem);
+        }
     }
     pub fn pop(&mut self) -> Result<T, &str> {
         //TODO
         if self.is_empty(){
             Err("Stack is empty")
         }else {
-            
+            match self.on_work {
+                1 => { // q1出队，值加入q2，队尾元素返回，队列切换
+                    while self.q1.size() > 1 {
+                        self.q2.enqueue(self.q1.dequeue().unwrap());
+                    }
+                    self.on_work = 2;
+                    self.q1.dequeue()
+                },
+                _ => { // q2出队，值加入q1，队尾元素返回，队列切换
+                    while self.q2.size() > 1 {
+                        self.q1.enqueue(self.q2.dequeue().unwrap());
+                    }
+                    self.on_work = 1;
+                    self.q2.dequeue()
+                }
+            }
         }
 		
     }
     pub fn is_empty(&self) -> bool {
 		//TODO
-        true
+        if self.on_work == 1{
+            self.q1.is_empty()
+        }else {
+            self.q2.is_empty()
+        }
     }
 }
 
